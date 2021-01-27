@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SteveYi Whois Service</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="shortcut icon" href="logo.png">
+
+    <style>
+        body,
+        html {
+            font-family: 'Recursive', sans-serif;
+            background-color: #f3f3f3;
+        }
+        
+        h1 {
+            text-shadow: #6A6A6A 1px -2px;
+            font-weight: 700;
+            font-size: 50px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        img {
+            vertical-align: middle;
+        }
+        
+        tr {
+            text-align: left;
+            padding: 4px;
+        }
+        
+        .container {
+            max-width: 768px;
+            margin: 0 auto;
+        }
+        
+        header {
+            margin-bottom: 16px;
+        }
+        
+        form {
+            margin-bottom: 8px;
+        }
+        
+        section {
+            margin: 48px 0;
+        }
+        
+        footer {
+            color: #aaa;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 
+        <header>
+            <h1>SteveYi Whois</h1>
+        </header>
+        -->
+        <form action="/whois" method="post">
+            <input class="inp" type="text" name="target" id="target">
+            <input class="btn" type="submit" value="Submit">
+        </form> Test query: <a href="/whois/?target=AS60614">AS60614</a><br><br> Copyright © 2019 -
+        <script>
+            document.write(new Date().getFullYear());
+        </script> <a href="https://steveyi.net/">SteveYi</a> no rights reserved.
+    </div>
+
+</body>
+
+</html>
