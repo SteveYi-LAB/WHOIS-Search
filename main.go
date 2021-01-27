@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
+	"strings"
 
 	"github.com/likexian/whois-go"
 )
@@ -20,14 +20,40 @@ func webServer(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.URL.Path)
 	p := "." + r.URL.Path
 
-	exist := "NULL"
-	if _, err := os.Stat(p); err == nil {
-		exist = "1"
-	} else if os.IsNotExist(err) {
-		exist = "0"
+	if r.Method == "GET" {
+		if p == "./" {
+			p = "./index.html"
+			http.ServeFile(w, r, p)
+		} else {
+			c, err := ioutil.ReadFile("./404.html")
+			if err != nil {
+				fmt.Println(err)
+			}
+			w.Write(c)
+		}
+	}
+}
+
+func whoisServer(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+
+	r.ParseForm()
+	fmt.Println("\nIP Address: " + getIP(r))
+	fmt.Println("method:", r.Method)
+	fmt.Println(r.URL.Path)
+
+	if r.Method == "GET" {
+		if r.URL.Path == "/whois" || r.URL.Path == "/whois/" {
+			http.Redirect(w, r, "/", 302)
+		} else {
+			Target := "NULL"
+			Target = strings.Replace(r.URL.Path, "/whois/", "", -1)
+			fmt.Println("Search:", Target)
+			io.WriteString(w, requestWhois(Target))
+		}
 	}
 
-	if p == "./whois" || p == "./whois/" {
+	if r.Method == "POST" {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		Target := "NULL"
 		for key, values := range r.Form {
@@ -37,19 +63,6 @@ func webServer(w http.ResponseWriter, r *http.Request) {
 		}
 		fmt.Println("Search:", Target)
 		io.WriteString(w, requestWhois(Target))
-	} else if r.Method == "GET" {
-		if exist == "1" {
-			if p == "./" {
-				p = "./index.html"
-			}
-			http.ServeFile(w, r, p)
-		} else {
-			c, err := ioutil.ReadFile("./404.html")
-			if err != nil {
-				fmt.Println(err)
-			}
-			w.Write(c)
-		}
 	}
 }
 
@@ -71,6 +84,7 @@ func requestWhois(Target string) string {
 
 func main() {
 	http.HandleFunc("/", webServer)
+	http.HandleFunc("/whois/", whoisServer)
 
 	fmt.Print("\n")
 	fmt.Print("-------------------\n")

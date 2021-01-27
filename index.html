@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>SteveYi Whois Service</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="logo.png">
-
+    <title>SteveYi Whois Service</title>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@600;800&display=swap" rel="stylesheet">
     <style>
         body,
         html {
@@ -36,40 +36,24 @@
             max-width: 768px;
             margin: 0 auto;
         }
-        
-        header {
-            margin-bottom: 16px;
-        }
-        
-        form {
-            margin-bottom: 8px;
-        }
-        
-        section {
-            margin: 48px 0;
-        }
-        
-        footer {
-            color: #aaa;
-            font-size: 0.8em;
-        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <!-- 
-        <header>
-            <h1>SteveYi Whois</h1>
-        </header>
-        -->
-        <form action="/whois" method="post">
-            <input class="inp" type="text" name="target" id="target">
-            <input class="btn" type="submit" value="Submit">
-        </form> Test query: <a href="/whois/?target=AS60614">AS60614</a><br><br> Copyright © 2019 -
+        <h1>SteveYi Whois Service</h1>
+        <div class="container">
+            <form action="/whois/" method="post">
+                <input class="inp" type="text" name="target" id="target">
+                <input class="btn" type="submit" value="Search">
+            </form>
+            <br> Test query: <a href="/whois/AS60614">AS60614</a>
+        </div>
+        <br>
+        <br> Copyright © 2019 -
         <script>
             document.write(new Date().getFullYear());
-        </script> <a href="https://steveyi.net/">SteveYi</a> no rights reserved.
+        </script> <a href="https://network.steveyi.net/">SteveYi Network Service</a> Rights Reserved.
     </div>
 
 </body>
