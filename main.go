@@ -26,6 +26,7 @@ func webServer(w http.ResponseWriter, r *http.Request) {
 			p = "./index.html"
 			http.ServeFile(w, r, p)
 		} else {
+			w.WriteHeader(http.StatusNotFound)
 			c, err := ioutil.ReadFile("./404.html")
 			if err != nil {
 				fmt.Println(err)
