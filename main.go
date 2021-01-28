@@ -44,11 +44,47 @@ func whoisServer(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r.URL.Path)
 
 	if r.Method == "GET" {
-		if r.URL.Path == "/whois" || r.URL.Path == "/whois/" {
+		if r.URL.Path == "/whois/RADB/" {
 			http.Redirect(w, r, "/", 302)
 		} else {
+			if strings.Contains(r.URL.Path, "/whois/RADB/") {
+				Target := "NULL"
+				Target = strings.ReplaceAll(r.URL.Path, "/whois/RADB/", "")
+				fmt.Println("Search RADB:", Target)
+				result, err := Whois(Target, "whois.radb.net")
+				if err != nil {
+					fmt.Println(result)
+				}
+				io.WriteString(w, result)
+			} else {
+				if r.URL.Path == "/whois/" {
+					http.Redirect(w, r, "/", 302)
+				} else {
+					if strings.Contains(r.URL.Path, "/whois/") {
+						Target := "NULL"
+						Target = strings.ReplaceAll(r.URL.Path, "/whois/", "")
+						fmt.Println("Search:", Target)
+						result, err := Whois(Target)
+						if err != nil {
+							fmt.Println(result)
+						}
+						io.WriteString(w, result)
+					}
+				}
+			}
+		}
+
+	}
+
+	if r.Method == "POST" {
+		if r.URL.Path == "/whois/" {
+			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 			Target := "NULL"
-			Target = strings.Replace(r.URL.Path, "/whois/", "", -1)
+			for key, values := range r.Form {
+				if key == "target" {
+					Target = values[0]
+				}
+			}
 			fmt.Println("Search:", Target)
 			result, err := Whois(Target)
 			if err != nil {
@@ -56,22 +92,21 @@ func whoisServer(w http.ResponseWriter, r *http.Request) {
 			}
 			io.WriteString(w, result)
 		}
-	}
-
-	if r.Method == "POST" {
-		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		Target := "NULL"
-		for key, values := range r.Form {
-			if key == "target" {
-				Target = values[0]
+		if r.URL.Path == "/whois/RADB/" {
+			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+			Target := "NULL"
+			for key, values := range r.Form {
+				if key == "target" {
+					Target = values[0]
+				}
 			}
+			fmt.Println("Search RADB:", Target)
+			result, err := Whois(Target, "whois.radb.net")
+			if err != nil {
+				fmt.Println(result)
+			}
+			io.WriteString(w, result)
 		}
-		fmt.Println("Search:", Target)
-		result, err := Whois(Target)
-		if err != nil {
-			fmt.Println(result)
-		}
-		io.WriteString(w, result)
 	}
 }
 
