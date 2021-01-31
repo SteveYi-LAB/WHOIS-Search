@@ -47,7 +47,14 @@
                 <input class="text" type="text" name="target" id="target">
                 <input class="btn" type="submit" value="Search">
             </form>
-            <br> Test query: <a href="/whois/AS60614">AS60614</a>
+            <br> Test query: <a href="/whois/AS60614">AS60614</a> or
+            <script type="application/javascript">
+                function getip(json) {
+                    document.write("<a href='/whois/", json.ip, "'>", json.ip, "</a>");
+                }
+            </script>
+            <script type="application/javascript" src="https://api.ip.sb/jsonip?callback=getip"></script>
+
         </div>
         <br>
         <br> Copyright © 2019 -
