@@ -1,68 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="logo.png">
-    <title>SteveYi Whois Service</title>
-    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@600;800&display=swap" rel="stylesheet">
-    <style>
-        body,
-        html {
-            font-family: 'Recursive', sans-serif;
-            background-color: #f3f3f3;
-        }
-        
-        h1 {
-            text-shadow: #6A6A6A 1px -2px;
-            font-weight: 700;
-            font-size: 50px;
-            display: inline-block;
-            vertical-align: middle;
-        }
-        
-        img {
-            vertical-align: middle;
-        }
-        
-        tr {
-            text-align: left;
-            padding: 4px;
-        }
-        
-        .container {
-            max-width: 768px;
-            margin: 0 auto;
-        }
-    </style>
+    <title>Search Whois</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.css">
+    <link rel="icon" href="https://static.yiy.tw/static/img/apple-touch-icon-114x114.png">
+    <script src='https://www.recaptcha.net/recaptcha/api.js' async defer></script>
 </head>
 
 <body>
-    <div class="container">
-        <h1>SteveYi Whois Service</h1>
-        <div class="container">
-            <form action="/whois/" method="post">
-                <input class="text" type="text" name="target" id="target">
-                <input class="btn" type="submit" value="Search">
-            </form>
-            <br> Test query: <a href="/whois/AS60614">AS60614</a> or
-            <script type="application/javascript">
-                function getip(json) {
-                    document.write("<a href='/whois/", json.ip, "'>", json.ip, "</a>");
-                }
-            </script>
-            <script type="application/javascript" src="https://api.ip.sb/jsonip?callback=getip"></script>
-
+    <div class="ts padded horizontally fitted fluid slate">
+        <div class="ts very narrow container">
+            <h1>Whois Search</h1>
+            <p>Search Domain Name, Website, IP and ASN whois data.</p>
         </div>
-        <br>
-        <br> Copyright © 2019 -
-        <script>
-            document.write(new Date().getFullYear());
-        </script> <a href="https://network.steveyi.net/">SteveYi Network Service</a> Rights Reserved.
     </div>
-
+    <br>
+    <div class="ts very narrow container">
+        <div class="ts clearing segment">
+            <form class="ts form" action="/whois/" method="POST">
+                <div class="two fields">
+                    <div class="field">
+                        <label>Target</label>
+                        <input placeholder="Search Something ...?" type="text" name='target'>
+                    </div>
+                </div>
+                <br> Test query for <a href="/whois/AS60614">AS60614</a> or
+                <script type="application/javascript">
+                    function getip(json) {
+                        document.write("<a href='/whois/", json.ip, "'>", json.ip, "</a>");
+                    }
+                </script>
+                <!--
+                    In fect, Google Recaptcha just a decoration XD
+                -->
+                <script type="application/javascript" src="https://api.ip.sb/jsonip?callback=getip"></script>
+                <div class='captcha_wrapper'>
+                    <br>
+                    <div class='g-recaptcha' data-sitekey=6LdkGd8UAAAAAM2gOhnVwf64D2arRTf0OXI6tNSy>
+                    </div>
+                </div>
+                <button class="ts right floated button">Search!</button>
+            </form>
+        </div>
+        Copyright © 2019 -
+        <script type="text/javascript">
+            document.write(new Date().getFullYear());
+        </script>
+        <a href="https://network.steveyi.net/">SteveYi Network Service</a> All rights reserved.
+        <br />
+    </div>
 </body>
 
 </html>
