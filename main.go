@@ -17,7 +17,7 @@ func webServer(w http.ResponseWriter, r *http.Request) {
 
 	r.ParseForm()
 	fmt.Println("\nIP Address: " + getIP(r))
-	fmt.Println("method:", r.Method)
+	fmt.Println("Method:", r.Method)
 	fmt.Println(r.URL.Path)
 	p := "." + r.URL.Path
 
@@ -41,7 +41,7 @@ func whoisServer(w http.ResponseWriter, r *http.Request) {
 
 	r.ParseForm()
 	fmt.Println("\nIP Address: " + getIP(r))
-	fmt.Println("method:", r.Method)
+	fmt.Println("Method:", r.Method)
 	fmt.Println(r.URL.Path)
 
 	if r.Method == "GET" {
