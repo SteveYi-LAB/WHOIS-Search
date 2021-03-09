@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.css">
     <link rel="icon" href="https://static.yiy.tw/static/img/apple-touch-icon-114x114.png">
     <script src='https://www.recaptcha.net/recaptcha/api.js' async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -28,12 +29,18 @@
                     </div>
                 </div>
                 <br> Test query for <a href="/whois/AS60614">AS60614</a> or
+                <a id='ip'></a>
                 <script type="application/javascript">
-                    function getip(json) {
-                        document.write("<a href='/whois/", json.ip, "'>", json.ip, "</a>");
-                    }
+                    axios({
+                            method: 'get',
+                            url: 'https://ip.steveyi.net/ip',
+                            responseType: 'application/json; charset=utf-8'
+                        })
+                        .then(function(json) {
+                            document.getElementById('ip').innerText = json.data.IP
+                            document.getElementById('ip').href = "/whois/" + json.data.IP
+                        });
                 </script>
-                <script type="application/javascript" src="https://api.ip.sb/jsonip?callback=getip"></script>
                 <button class="ts right floated button">Search!</button>
             </form>
         </div>
