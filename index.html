@@ -9,6 +9,14 @@
     <link rel="icon" href="https://static.yiy.tw/static/img/apple-touch-icon-114x114.png">
     <script src='https://www.recaptcha.net/recaptcha/api.js' async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        pre {
+            font-family: 'Share Tech Mono', monospace;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,38 +27,50 @@
         </div>
     </div>
     <br>
-    <div class="ts very narrow container">
+    <div class="ts very narrow container" id="app">
         <div class="ts clearing segment">
-            <form class="ts form" action="/whois/" method="POST">
+            <form class="ts form" @submit.prevent="search()">
                 <div class="two fields">
                     <div class="field">
                         <label>Target</label>
-                        <input placeholder="Search Something ...?" type="text" name='target'>
+                        <input placeholder="Search Something ...?" type="text" v-model="IP">
                     </div>
                 </div>
-                <br> Test query for <a href="/whois/AS60614">AS60614</a> or
-                <a id='ip'></a>
-                <script type="application/javascript">
-                    axios({
-                            method: 'get',
-                            url: 'https://ip.steveyi.net/ip/',
-                            responseType: 'application/json; charset=utf-8'
-                        })
-                        .then(function(json) {
-                            document.getElementById('ip').innerText = json.data.IP
-                            document.getElementById('ip').href = "/whois/" + json.data.IP
-                        });
-                </script>
-                <button class="ts right floated button">Search!</button>
+                <br> Test query for <a @click="search('AS60614')">AS60614</a><span v-if="userIP" style="margin: 0 .2em;">or</span>
+                <a v-if="userIP" @click="search(userIP)">{{userIP}}</a>
+                <button class="ts right floated button" :class="{loading}">Search!</button>
             </form>
         </div>
-        Copyright © 2019 -
-        <script type="text/javascript">
-            document.write(new Date().getFullYear());
-        </script>
+        <div class="ts clearing segment" v-if="result">
+            <pre>{{result}}</pre>
+        </div>
+        Copyright © 2019 - {{year}}
         <a href="https://network.steveyi.net/">SteveYi Network Service</a> All rights reserved.
         <br />
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.5/vue.global.prod.js"></script>
+    <script>
+        const App = {
+            async created() {
+                this.userIP = (await axios('https://ip.steveyi.net/ip/')).data.IP
+            },
+            data: () => ({
+                userIP: null,
+                year: new Date().getFullYear(),
+                result: null,
+                IP: '',
+                loading: false
+            }),
+            methods: {
+                async search(target) {
+                    this.loading = true
+                    this.result = (await axios(`https://whois.steveyi.net/whois/${target || this.IP}`)).data
+                    this.loading = false
+                }
+            }
+        }
+        Vue.createApp(App).mount('#app');
+    </script>
 </body>
 
 </html>
