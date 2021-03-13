@@ -64,7 +64,7 @@
             methods: {
                 async search(target) {
                     this.loading = true
-                    this.result = (await axios(`https://whois.steveyi.net/whois/${target || this.IP}`)).data
+                    this.result = (await axios(`/whois/${target || this.IP}`)).data
                     this.loading = false
                 }
             }
