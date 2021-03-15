@@ -36,21 +36,23 @@
                         <input placeholder="Search Something ...?" type="text" v-model="IP">
                     </div>
                 </div>
-                <br> Test query for <a @click="search('AS60614')">AS60614</a><span v-if="userIP" style="margin: 0 .2em;">or</span>
-                <a v-if="userIP" @click="search(userIP)">{{userIP}}</a>
+                <br> Test query for <a @click="search('AS60614')">AS60614</a><span v-if="userIP"
+                    style="margin: 0 .2em;">or</span>
+                <a v-if="userIP" @click="search(userIP)">${userIP}</a>
                 <button class="ts right floated button" :class="{loading}">Search!</button>
             </form>
         </div>
         <div class="ts clearing segment" v-if="result">
-            <pre>{{result}}</pre>
+            <pre>${result}</pre>
         </div>
-        Copyright © 2019 - {{year}}
+        Copyright © 2019 - ${year}
         <a href="https://network.steveyi.net/">SteveYi Network Service</a> All rights reserved.
         <br />
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.5/vue.global.prod.js"></script>
     <script>
-        const App = {
+        const App = { 
+            delimiters: ['${', '}'],
             async created() {
                 this.userIP = (await axios('https://ip.steveyi.net/ip/')).data.IP
             },
@@ -69,7 +71,7 @@
                 }
             }
         }
-        Vue.createApp(App).mount('#app');
+        Vue.createApp(App).mount('#app')
     </script>
 </body>
 

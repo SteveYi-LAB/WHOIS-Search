@@ -2,121 +2,65 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"io/ioutil"
-	"log"
 	"net"
-	"net/http"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
-func webServer(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-
-	r.ParseForm()
-	fmt.Println("\nIP Address: " + getIP(r))
-	fmt.Println("Method:", r.Method)
-	fmt.Println(r.URL.Path)
-	p := "." + r.URL.Path
-
-	if r.Method == "GET" {
-		if p == "./" {
-			p = "./index.html"
-			http.ServeFile(w, r, p)
-		} else {
-			w.WriteHeader(http.StatusNotFound)
-			c, err := ioutil.ReadFile("./404.html")
-			if err != nil {
-				fmt.Println(err)
-			}
-			w.Write(c)
-		}
-	}
+func webServer(ctx *gin.Context) {
+	ctx.HTML(200, "index.html", nil)
 }
 
-func whoisServer(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+func whoisServer(ctx *gin.Context) {
 
-	r.ParseForm()
-	fmt.Println("\nIP Address: " + getIP(r))
-	fmt.Println("Method:", r.Method)
-	fmt.Println(r.URL.Path)
-
-	if r.Method == "GET" {
-		if r.URL.Path == "/whois/RADB/" {
-			http.Redirect(w, r, "/", 302)
-		} else {
-			if strings.Contains(r.URL.Path, "/whois/RADB/") {
-				Target := "NULL"
-				Target = strings.ReplaceAll(r.URL.Path, "/whois/RADB/", "")
-				fmt.Println("Search RADB:", Target)
-				result, err := Whois(Target, "whois.radb.net")
-				if err != nil {
-					fmt.Println(result)
-				}
-				io.WriteString(w, result)
-			} else {
-				if r.URL.Path == "/whois/" {
-					http.Redirect(w, r, "/", 302)
-				} else {
-					if strings.Contains(r.URL.Path, "/whois/") {
-						Target := "NULL"
-						Target = strings.ReplaceAll(r.URL.Path, "/whois/", "")
-						fmt.Println("Search:", Target)
-						result, err := Whois(Target)
-						if err != nil {
-							fmt.Println(result)
-						}
-						io.WriteString(w, result)
-					}
-				}
-			}
+	if strings.Contains(ctx.Request.URL.Path, "/whois/") {
+		Target := "NULL"
+		Target = strings.ReplaceAll(ctx.Request.URL.Path, "/whois/", "")
+		fmt.Println("Search:", Target)
+		result, err := Whois(Target)
+		if err != nil {
+			fmt.Println(result)
 		}
-
+		ctx.String(200, result, nil)
 	}
 
-	if r.Method == "POST" {
-		if r.URL.Path == "/whois/" {
-			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-			Target := "NULL"
-			for key, values := range r.Form {
-				if key == "target" {
-					Target = values[0]
-				}
-			}
-			fmt.Println("Search:", Target)
-			result, err := Whois(Target)
-			if err != nil {
-				fmt.Println(result)
-			}
-			io.WriteString(w, result)
-		}
-		if r.URL.Path == "/whois/RADB/" {
-			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-			Target := "NULL"
-			for key, values := range r.Form {
-				if key == "target" {
-					Target = values[0]
-				}
-			}
-			fmt.Println("Search RADB:", Target)
-			result, err := Whois(Target, "whois.radb.net")
-			if err != nil {
-				fmt.Println(result)
-			}
-			io.WriteString(w, result)
-		}
-	}
 }
 
-func getIP(r *http.Request) string {
-	forwarded := r.Header.Get("X-FORWARDED-FOR")
-	if forwarded != "" {
-		return forwarded
+func whoisRADB(ctx *gin.Context) {
+	Target := "NULL"
+	Target = strings.ReplaceAll(ctx.Request.URL.Path, "/whois/RADB/", "")
+	fmt.Println("Search RADB:", Target)
+	result, err := Whois(Target, "whois.radb.net")
+	if err != nil {
+		fmt.Println(result)
 	}
-	return r.RemoteAddr
+	ctx.String(200, result, nil)
+}
+
+func whoisPOST(ctx *gin.Context) {
+	Target := ctx.PostForm("target")
+	result, err := Whois(Target)
+	if err != nil {
+		fmt.Println(result)
+	}
+	ctx.String(200, result, nil)
+}
+
+func whoisRADBPOST(ctx *gin.Context) {
+	Target := ctx.PostForm("target")
+	result, err := Whois(Target, "whois.radb.net")
+	if err != nil {
+		fmt.Println(result)
+	}
+	ctx.String(200, result, nil)
+}
+
+func pageNotAvailable(ctx *gin.Context) {
+	ctx.HTML(404, "404.html", nil)
 }
 
 const (
@@ -239,8 +183,6 @@ func getServer(data string) string {
 }
 
 func main() {
-	http.HandleFunc("/", webServer)
-	http.HandleFunc("/whois/", whoisServer)
 
 	fmt.Print("\n")
 	fmt.Print("-------------------\n")
@@ -254,8 +196,17 @@ func main() {
 	fmt.Print("-------------------\n")
 	fmt.Print("\n")
 
-	err := http.ListenAndServe(":30010", nil)
-	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
-	}
+	router := gin.New()
+	router.Use(gin.Logger(), gin.Recovery())
+
+	router.LoadHTMLGlob("static/*")
+
+	router.GET("/", webServer)
+	router.GET("/whois/", whoisServer)
+	router.GET("/whois/RADB/", whoisRADB)
+	router.POST("/whois/", whoisPOST)
+
+	router.NoRoute(pageNotAvailable)
+
+	router.Run(":30010")
 }
