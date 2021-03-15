@@ -17,10 +17,12 @@ func webServer(ctx *gin.Context) {
 
 func whoisServer(ctx *gin.Context) {
 
-	if strings.Contains(ctx.Request.URL.Path, "/whois/") {
+	if strings.HasPrefix(ctx.Request.URL.Path, "/whois/RADB/") == true {
+		Target := strings.ReplaceAll(ctx.Request.URL.Path, "/whois/RADB/", "")
+		ctx.String(200, whoisRADB(Target), nil)
+	} else if strings.HasPrefix(ctx.Request.URL.Path, "/whois/") == true {
 		Target := "NULL"
 		Target = strings.ReplaceAll(ctx.Request.URL.Path, "/whois/", "")
-		fmt.Println("Search:", Target)
 		result, err := Whois(Target)
 		if err != nil {
 			fmt.Println(result)
@@ -30,15 +32,12 @@ func whoisServer(ctx *gin.Context) {
 
 }
 
-func whoisRADB(ctx *gin.Context) {
-	Target := "NULL"
-	Target = strings.ReplaceAll(ctx.Request.URL.Path, "/whois/RADB/", "")
-	fmt.Println("Search RADB:", Target)
+func whoisRADB(Target string) string {
 	result, err := Whois(Target, "whois.radb.net")
 	if err != nil {
 		fmt.Println(result)
 	}
-	ctx.String(200, result, nil)
+	return result
 }
 
 func whoisPOST(ctx *gin.Context) {
@@ -202,8 +201,7 @@ func main() {
 	router.LoadHTMLGlob("static/*")
 
 	router.GET("/", webServer)
-	router.GET("/whois/", whoisServer)
-	router.GET("/whois/RADB/", whoisRADB)
+	router.GET("/whois/:target", whoisServer)
 	router.POST("/whois/", whoisPOST)
 
 	router.NoRoute(pageNotAvailable)
