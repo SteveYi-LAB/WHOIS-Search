@@ -8,7 +8,7 @@ import (
 )
 
 func webServer(ctx *gin.Context) {
-	ctx.HTML(200, "index.html", nil)
+	ctx.HTML(200, "index.tmpl", nil)
 }
 
 func whoisServer(ctx *gin.Context) {
@@ -48,7 +48,7 @@ func whoisRADBPOST(ctx *gin.Context) {
 }
 
 func pageNotAvailable(ctx *gin.Context) {
-	ctx.HTML(404, "404.html", nil)
+	ctx.HTML(404, "404.tmpl", nil)
 }
 
 func main() {
