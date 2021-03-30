@@ -2,53 +2,54 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/likexian/whois"
 )
 
-func webServer(ctx *gin.Context) {
-	ctx.HTML(200, "index.tmpl", nil)
+func webServer(c *gin.Context) {
+	c.HTML(200, "index.tmpl", nil)
 }
 
-func whoisServer(ctx *gin.Context) {
-	Target := ctx.Param("target")
+func whoisServer(c *gin.Context) {
+	Target := strings.Replace(c.Param("target"), "/", "", 1)
 	result, err := whois.Whois(Target)
 	if err != nil {
 		fmt.Println(result)
 	}
-	ctx.String(200, result)
+	c.Data(200, "text/plain; charset=UTF-8", []byte(result))
 }
 
-func whoisRADB(ctx *gin.Context) {
-	Target := ctx.Param("target")
+func whoisRADB(c *gin.Context) {
+	Target := c.Param("target")
 	result, err := whois.Whois(Target, "whois.radb.net")
 	if err != nil {
 		fmt.Println(result)
 	}
-	ctx.String(200, result)
+	c.Data(200, "text/plain; charset=UTF-8", []byte(result))
 }
 
-func whoisPOST(ctx *gin.Context) {
-	Target := ctx.PostForm("target")
+func whoisPOST(c *gin.Context) {
+	Target := c.PostForm("target")
 	result, err := whois.Whois(Target)
 	if err != nil {
 		fmt.Println(result)
 	}
-	ctx.String(200, result)
+	c.Data(200, "text/plain; charset=UTF-8", []byte(result))
 }
 
-func whoisRADBPOST(ctx *gin.Context) {
-	Target := ctx.PostForm("target")
+func whoisRADBPOST(c *gin.Context) {
+	Target := c.PostForm("target")
 	result, err := whois.Whois(Target, "whois.radb.net")
 	if err != nil {
 		fmt.Println(result)
 	}
-	ctx.String(200, result)
+	c.Data(200, "text/plain; charset=UTF-8", []byte(result))
 }
 
-func pageNotAvailable(ctx *gin.Context) {
-	ctx.HTML(404, "404.tmpl", nil)
+func pageNotAvailable(c *gin.Context) {
+	c.HTML(404, "404.tmpl", nil)
 }
 
 func main() {
@@ -69,7 +70,7 @@ func main() {
 	router.LoadHTMLGlob("static/*")
 
 	router.GET("/", webServer)
-	router.GET("/whois/:target", whoisServer)
+	router.GET("/whois/*target", whoisServer)
 	router.POST("/whois/", whoisPOST)
 	router.GET("/RADB/:target", whoisRADB)
 	router.POST("/RADB/", whoisRADBPOST)
