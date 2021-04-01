@@ -72,7 +72,7 @@ func main() {
 	router.GET("/", webServer)
 	router.GET("/whois/*target", whoisServer)
 	router.POST("/whois/", whoisPOST)
-	router.GET("/RADB/:target", whoisRADB)
+	router.GET("/RADB/*target", whoisRADB)
 	router.POST("/RADB/", whoisRADBPOST)
 
 	router.NoRoute(pageNotAvailable)
