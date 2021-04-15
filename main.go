@@ -22,7 +22,7 @@ func whoisServer(c *gin.Context) {
 }
 
 func whoisRADB(c *gin.Context) {
-	Target := c.Param("target")
+	Target := strings.Replace(c.Param("target"), "/", "", 1)
 	result, err := whois.Whois(Target, "whois.radb.net")
 	if err != nil {
 		fmt.Println(result)
@@ -31,7 +31,7 @@ func whoisRADB(c *gin.Context) {
 }
 
 func whoisPOST(c *gin.Context) {
-	Target := c.PostForm("target")
+	Target := strings.Replace(c.Param("target"), "/", "", 1)
 	result, err := whois.Whois(Target)
 	if err != nil {
 		fmt.Println(result)
@@ -40,7 +40,7 @@ func whoisPOST(c *gin.Context) {
 }
 
 func whoisRADBPOST(c *gin.Context) {
-	Target := c.PostForm("target")
+	Target := strings.Replace(c.Param("target"), "/", "", 1)
 	result, err := whois.Whois(Target, "whois.radb.net")
 	if err != nil {
 		fmt.Println(result)
