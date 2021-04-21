@@ -1,6 +1,6 @@
 # SteveYi Whois
 
-SteveYi Whois System, use it on whois.steveyi.net
+SteveYi Whois System, which was used on whois.steveyi.net
 
 ## Install
 
@@ -14,7 +14,7 @@ Port will listen at 30010
 
 **Home Page**
 
-![](https://raw.githubusercontent.com/SteveYi-LAB/SteveYi-Whois/main/image/index.png)
+[![](https://raw.githubusercontent.com/SteveYi-LAB/SteveYi-Whois/main/image/index.png)](https://whois.steveyi.net)
 
 **Search ASN**
 
