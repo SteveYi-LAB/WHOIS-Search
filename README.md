@@ -1,6 +1,6 @@
 # SteveYi Whois
 
-SteveYi Whois System which used on whois.steveyi.net
+SteveYi Whois System, which was used on whois.steveyi.net
 
 ## Install
 
