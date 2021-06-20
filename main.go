@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/likexian/whois"
 )
@@ -66,7 +67,9 @@ func main() {
 
 	router := gin.New()
 	router.Use(gin.Logger(), gin.Recovery())
-
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"*"}
+	router.Use(cors.New(config))
 	router.LoadHTMLGlob("static/*")
 
 	router.GET("/", webServer)
