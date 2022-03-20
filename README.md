@@ -1,25 +1,28 @@
-# SteveYi Whois
+# WHOIS Search
 
-SteveYi Whois System, which was used on whois.steveyi.net
+A simple WHOIS search tool, which was used on whois.steveyi.net.
 
 ## Install
 
+Download the latest release version, port will listen at 30010.
+
+## Usage
+
+If you are trying to specify the IRR DB, please refer to the below list.
+
 ```
-go build main.go
-./main
+"afrnic"    whois.afrinic.net
+"apnic"     whois.apnic.net
+"arin"      whois.arin.net
+"lacnic"    whois.lacnic.net
+"ripe"      whois.ripe.net
+"RADB"      whois.radb.net
 ```
-Port will listen at 30010
 
-## ScreenShot
+HTTP GET:
 
-**Home Page**
+```
+curl http://localhost:30010/whois/{target}
+curl http://localhost:30010/whois/{target}/{IRR}
+```
 
-[![](https://raw.githubusercontent.com/SteveYi-LAB/SteveYi-Whois/main/image/index.png)](https://whois.steveyi.net)
-
-**Search ASN**
-
-![](https://raw.githubusercontent.com/SteveYi-LAB/SteveYi-Whois/main/image/as60614.png)
-
-**Search Domain**
-
-![](https://raw.githubusercontent.com/SteveYi-LAB/SteveYi-Whois/main/image/steveyi.net.png)
