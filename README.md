@@ -25,4 +25,3 @@ HTTP GET:
 curl http://localhost:30010/whois/{target}
 curl http://localhost:30010/whois/{target}/{IRR}
 ```
-
