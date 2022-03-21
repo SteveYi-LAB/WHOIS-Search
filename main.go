@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/SteveYi-LAB/WHOIS-Search/internal/punycode"
 	"github.com/SteveYi-LAB/WHOIS-Search/internal/whoisSearch"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -12,7 +13,7 @@ func webServer(c *gin.Context) {
 
 func whoisServer(c *gin.Context) {
 	IRR := c.Param("IRR")
-	target := c.Param("target")
+	target := punycode.ConvertertoASCII(c.Param("target"))
 
 	result := whoisSearch.IRR_DB(IRR, target)
 	c.Data(200, "text/plain; charset=UTF-8", []byte(result))

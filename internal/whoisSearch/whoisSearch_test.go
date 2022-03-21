@@ -1,4 +1,4 @@
-package whoisSearch
+package whoisSearch_test
 
 import (
 	"fmt"
