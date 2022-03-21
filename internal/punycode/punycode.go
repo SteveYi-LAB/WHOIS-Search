@@ -8,6 +8,7 @@ import (
 
 var p *idna.Profile
 
+// Converts a domain name to ASCII.
 func ConvertertoASCII(domain string) string {
 	p = idna.New()
 	return_data, err := p.ToASCII(domain)

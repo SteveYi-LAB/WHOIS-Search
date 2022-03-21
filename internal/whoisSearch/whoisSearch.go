@@ -6,6 +6,7 @@ import (
 	"github.com/likexian/whois"
 )
 
+// Choose IRR DB
 func IRR_DB(IRR, target string) string {
 	var return_date string
 	var err error
@@ -35,6 +36,7 @@ func IRR_DB(IRR, target string) string {
 	return return_date
 }
 
+// Check error
 func checkerr(err error) {
 	if err != nil {
 		fmt.Println(err)

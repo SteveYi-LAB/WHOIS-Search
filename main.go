@@ -7,10 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Index Page
 func webServer(c *gin.Context) {
 	c.HTML(200, "index.tmpl", nil)
 }
 
+// Query whois
 func whoisServer(c *gin.Context) {
 	IRR := c.Param("IRR")
 	target := punycode.ConvertertoASCII(c.Param("target"))
@@ -19,10 +21,12 @@ func whoisServer(c *gin.Context) {
 	c.Data(200, "text/plain; charset=UTF-8", []byte(result))
 }
 
+// 404 Page
 func pageNotAvailable(c *gin.Context) {
 	c.HTML(404, "404.tmpl", nil)
 }
 
+// Gin Engine
 func main() {
 	router := gin.New()
 	router.Use(gin.Logger(), gin.Recovery())
