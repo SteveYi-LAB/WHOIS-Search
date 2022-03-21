@@ -1,8 +1,9 @@
-package tools
+package tools_test
 
 import (
 	"strconv"
 	"strings"
+	"testing"
 
 	valid "github.com/asaskevich/govalidator"
 )
@@ -39,4 +40,9 @@ func CheckType(target string) string {
 		return "Domain"
 	}
 	return "Not Found"
+}
+
+// Test CheckType
+func TestMain(t *testing.T) {
+	IsASN("AS9810238091283091830989")
 }
