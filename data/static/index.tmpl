@@ -6,7 +6,7 @@
     <title>WHOIS Search</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.css">
-    <link rel="icon" href="https://static.yiy.tw/static/img/apple-touch-icon-114x114.png">
+    <link rel="icon" href="https://static-a1.steveyi.net/static/img/apple-touch-icon-114x114.png">
     <script src='https://www.recaptcha.net/recaptcha/api.js' async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -54,7 +54,7 @@
         const App = { 
             delimiters: ['${', '}'],
             async created() {
-                this.userIP = (await axios('https://ip.steveyi.net/ip/')).data.IP
+                this.userIP = (await axios('https://api.steveyi.net/ip/')).data.IP_Address
             },
             data: () => ({
                 userIP: null,

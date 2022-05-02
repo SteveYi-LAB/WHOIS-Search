@@ -7,5 +7,6 @@ RUN  CGO_ENABLED=1 CC=gcc go build -o /app/app main.go
 FROM alpine:3.10
 
 COPY --from=builder /app/app /app/
+COPY --from=builder /app/data/ /app/data/
 WORKDIR /app
 CMD ["./app"]
