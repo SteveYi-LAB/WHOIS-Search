@@ -2,10 +2,8 @@ name: Docker image build and push
 
 on:
   push:
-    branches:
-      - main
     tags:
-      - v*
+      - '*'
 
 jobs:
   docker:
@@ -24,13 +22,19 @@ jobs:
           registry: docker-registry.steveyi.net
           username: ${{ secrets.STEVEYI_DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.STEVEYI_DOCKER_REGISTRY_PASSWORD }}
+      - name: Get tag
+        id: tag
+        uses: dawidd6/action-get-tag@v1
+        with:
+          # Optionally strip `v` prefix
+          strip_v: false
       - name: Build and push Docker images
         uses: docker/build-push-action@v2.10.0
         with:
           push: true
           tags: |
             docker-registry.steveyi.net/steveyi-service/whois-search:latest
-            docker-registry.steveyi.net/steveyi-service/whois-search:${{ github.ref_name }}
+            docker-registry.steveyi.net/steveyi-service/whois-search:${{steps.tag.outputs.tag}}
       # - name: Deploy to VM
       #   uses: appleboy/ssh-action@master
       #   with:
