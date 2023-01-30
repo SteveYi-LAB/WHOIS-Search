@@ -1,0 +1,42 @@
+name: Docker image build and push
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+
+jobs:
+  docker:
+    runs-on: ubuntu-20.04
+    steps:
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to SteveYi Harbor
+        uses: docker/login-action@v2
+        with:
+          registry: docker-registry.steveyi.net
+          username: ${{ secrets.STEVEYI_DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.STEVEYI_DOCKER_REGISTRY_PASSWORD }}
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v2.10.0
+        with:
+          push: true
+          tags: |
+            docker-registry.steveyi.net/steveyi-service/whois-search:latest
+            docker-registry.steveyi.net/steveyi-service/whois-search:${{ env.APP_VERSION }}
+      # - name: Deploy to VM
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USERNAME }}
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     script: |
+      #       sudo docker pull steveyiyo/whois-search:latest
+      #       sudo docker service update —image steveyiyo/whois-search:latest --force
