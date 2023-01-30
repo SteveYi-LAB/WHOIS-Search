@@ -2,6 +2,8 @@ name: Docker image build and push
 
 on:
   push:
+    branches:
+      - main
     tags:
       - v*
 
@@ -28,7 +30,7 @@ jobs:
           push: true
           tags: |
             docker-registry.steveyi.net/steveyi-service/whois-search:latest
-            docker-registry.steveyi.net/steveyi-service/whois-search:${{ env.APP_VERSION }}
+            docker-registry.steveyi.net/steveyi-service/whois-search:${{ github.ref_name }}
       # - name: Deploy to VM
       #   uses: appleboy/ssh-action@master
       #   with:
